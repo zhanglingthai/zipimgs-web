@@ -6,14 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/core.css">
-    <title>ludan</title>
+    <title>zipimgs</title>
 </head>
 
 <body>
-    <div class="container">
-
+    <div class="header">
+        <div class="container">
+            <div class="logo">ZIPIMGS</div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="container">
+            <div class="uploadbox">
+                <form action="https://fundscat.com/api/upload" class="dropzone" id="my-awesome-dropzone">
+                    <div class="icon"><img src="./imgs/upload-solid.svg"></div>
+                    <div class="prompt">
+                        <p>拖入 或 点选 JPG PNG GIF SVG 图片</p>
+                        <p>单次限制 32张 X 5MB</p>
+                    </div>
+                </form>
+            </div>
+            <div class="resultbox hide">
+                <ul>
+                    <li class="clearfix">
+                        <div class="left">
+                            <div class="filename">filename.png</div>
+                            <div class="uploadsize">888kb</div>
+                        </div>
+                        <div class="center">
+                            <div class="progress">
+                                <div class="progress-status">Finished</div>
+                            </div>
+                            <div class="outputsize">666kb</div>
+                        </div>
+                        <div class="right">
+                            <div><a href="">download</a></div>
+                            <div class="proportion">-80%</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            Zipimgs.com Made by LZ
+        </div>
     </div>
     <script type="text/javascript" src="./js/core.js"></script>
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 </body>
 
 </html>
