@@ -2,9 +2,9 @@
 
 Dropzone.autoDiscover = false;
 
-var dropz = new Dropzone('div#dropzone', {
+var dropzone = new Dropzone('div#dropzone', {
     url: 'https://fundscat.com/api/upload',
-    method:"post",
+    method: "post",
     maxFiles: 50, // 用于限制此Dropzone将处理的最大文件数
     parallelUploads: 8, // 前端同时发送upload 数
     maxFilesize: 5, //单文件最大 5M
@@ -31,16 +31,17 @@ var dropz = new Dropzone('div#dropzone', {
         <div class="center">
             <div class="progress-wrap">
                 <span class="progress-line" data-dz-uploadprogress></span>
+                <span class="progress-per" data-dz-uploadprogress-per>0%...</span>
                 <span class="progress-error" data-dz-errormessage></span>
             </div>
         </div>
-        <div class="right">
-            <div class="outputsize">666kb</div>
+        <div class="right" data-dz-complete>
+            <div class="outputsize" data-dz-outputsize>0KB</div>
             <div class="ctrl">
-                <a href="">对比</a>
-                <a href="">下载文件</a>
+                <a href="" data-dz-compare alt="对比图片" target="_blank">对比图片</a>
+                <a href="" data-dz-outputurl alt="下载图片">下载图片</a>
             </div>
-            <div class="proportion">-99%</div>
+            <div class="proportion" data-dz-proportion>0%</div>
         </div>
     </li>
     `,
@@ -52,73 +53,92 @@ var dropz = new Dropzone('div#dropzone', {
     dictResponseError: "上传失败：{{statusCode}}",
     init: function () { // dropzone初始化时调用您可以在此处添加事件侦听器
         var myDropzone = this;
-        this.on("addedfile", function (file) {
-            // var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>移除</button>");
-            // removeButton.addEventListener("click", function (e) {
-            //     e.preventDefault();
-            //     e.stopPropagation();
-            //     myDropzone.removeFile(file);
-            // });
-            // file.previewElement.appendChild(removeButton);
+
+        //每次操作触发一次
+        this.on("addedfiles", function (file) {
             $('.resultbox').show();
         });
-        this.on("sending", (data, xhr, formData) => {
-            console.log("sending", data, xhr, formData)
+        //总上传进度
+        this.on("totaluploadprogress", (totalUploadProgress, totalBytes, totalBytesSent) => {
+            console.log("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent)
         });
-        // this.on("sendingmultiple", (file, xhr, formData) => {
-        //     console.log("sendingmultiple", file, xhr, formData)
-        // });
-        // //所有文件上传进度
-        // this.on("totaluploadprogress", (progress, byte, bytes) => {
-        //     console.log("totaluploadprogress", progress, byte, bytes)
-        // });
-        // //单个文件上传进度
-        // this.on("uploadprogress",(file, progress, bytesSent)=>{
-        //     console.log('uploadprogress'+file, progress, bytesSent)
-        // });
-        // this.on("success", (files, response) => {
-        //     console.log("success", files, response)
-        // });
-        // this.on("successmultiple", (files, response) => {
-        //     console.log("successmultiple", files, response)
-        // });
-        // this.on("error", (files, response) => {
-        //     console.log("error", files, response)
-        // });
-        // this.on("removedfile",(file)=>{
+        //单个文件上传进度
+        this.on("uploadprogress", (file, progress, bytesSent) => {
+            if (file.previewElement) {
+                if (progress == 100) {
+                    for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress-per]")) {
+                        node.textContent = `ZIPING IMG...`;
+                    }
+                } else {
+                    for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress-per]")) {
+                        node.textContent = `${progress.toFixed(2)}%`;
+                    }
+                }
+            }
+        });
+        this.on("success", (file, response, e) => {
+            console.log("success", file, response, e)
+            if (file.previewElement) {
+                for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress-per]")) {
+                    node.textContent = `ZIP 成功`;
+                }
+                //做压缩后的文字处理跟链接处理
 
-        // });
-        // this.on("canceled",(file)=>{
+                if (response.success) {
+                    const img = response.data[0];
+                    for (let node of file.previewElement.querySelectorAll("[data-dz-outputsize]")) {
+                        node.textContent = `${byteToKB(img.outputSize)}`;
+                    }
 
-        // });
-        // this.on("canceledmultiple",(file)=>{
+                    for (let node of file.previewElement.querySelectorAll("[data-dz-proportion]")) {
+                        node.textContent = `${getProportion(img.uploadSize, img.outputSize)}`;
+                    }
 
-        // });
-        // //生成预览
-        // this.on("thumbnail",(file, dataUrl)=>{
-        //     // console.log("thumbnail",file, dataUrl)
-        // });
-        // //开始上传流程
-        // this.on("processing",file=>{
-        //     console.log('processing')
-        // });
-        // this.on("complete",file =>{
-        //     console.log('complete1',file)
-        // })
-    },
-    sendingmultiple: function (file, xhr, formData) {// 在每个文件发送之前调用。获取xhr对象和formData对象作为第二和第三个参数，可以修改它们（例如添加CSRF令牌）或添加其他数据。
-        console.log(file, xhr, formData)
-        // $.each(submitParams, function (key, value) {
-        //     formData.set(key, value);
-        // });
-    },
-    successmultiple: function (file, response) {// 该文件已成功上传。获取服务器响应作为第二个参数。
-        console.log(file, response)
-    },
-    completemultiple: function (file) {
-        // console.log('completemultiple',file)
-    },
-    complete: function (file) {
-        // console.log('complete',file)
-    },
+                    for (let node of file.previewElement.querySelectorAll("[data-dz-compare]")) {
+                        node.href = `/compare?uploadimg=${img.uploadPath}&outputimg=${img.outputPath}`;
+                    }
+
+                    for (let node of file.previewElement.querySelectorAll("[data-dz-outputurl]")) {
+                        node.href = `${img.outputPath}`;
+                        node.download = `${img.filename}`;
+                    }
+
+                } else {
+
+                }
+            }
+        });
+
+        this.on("complete", file => {
+            console.log('complete', file)
+            if (file.previewElement) {
+                for (let node of file.previewElement.querySelectorAll("[data-dz-complete]")) {
+                    node.style.display = `inline-block`;
+                }
+            }
+        })
+
+        this.on("error", (file, message) => {
+            if (file.previewElement) {
+                //改变进度条颜色
+                for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress]")) {
+                    node.style.backgroundColor = `#bbb`;
+                }
+
+                //隐藏进度条百分比
+                for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress-per]")) {
+                    node.style.display = `none`;
+                }
+            }
+        })
+    }
 });
+
+const byteToKB = (bytes) => {
+    return `${bytes / 1000} KB`;
+}
+
+//压缩前后对比率
+const getProportion = (uploadSize, outputSize) => {
+    return `-${100 - Math.floor((outputSize / uploadSize) * 100)} %`
+}
