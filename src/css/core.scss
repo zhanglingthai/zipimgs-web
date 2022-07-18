@@ -22,7 +22,11 @@ a {
 .header {
     line-height: 45px;
     background-color: #fff;
+    .logo{
+        padding: 0 10px;
+    }
 }
+
 
 .main {
     padding: 20px 0;
@@ -96,7 +100,7 @@ a {
                 vertical-align: middle;
             }
             .progress-wrap{
-                
+
             }
             .filescount{
                 margin-right: 12px;
