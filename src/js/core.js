@@ -22,7 +22,7 @@ var dropz = new Dropzone('div#dropzone', {
     `,//上传区域dom
     previewsContainer: document.querySelector('.resultbox ul'),
     previewTemplate: `
-    <li class="clearfix">
+    <li>
         <div class="left">
             <div class="img-wrap"><img data-dz-thumbnail /></div>
             <div class="filename" data-dz-name></div>

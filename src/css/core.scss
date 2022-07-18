@@ -8,6 +8,12 @@ body {
     position: relative;
 }
 
+a {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .container {
     margin: 0 auto;
     width: 1200px;
@@ -74,23 +80,73 @@ body {
         top: 220px;
         bottom: 30px;
         left: 50%;
-        width: 880px;
+        width: 912px;
         margin-left: -440px;
-        overflow-y: scroll;
-        background-color: #fff;
-        padding: 10px 14px;
-        border-radius: 5px;
+
+        .totalprogress {
+            line-height: 40px;
+            font-size: 1.1em;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 0 14px;
+            border: 1px solid #bbcbd0;
+
+            &>div {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .progress-wrap{
+                
+            }
+            .filescount{
+                margin-right: 12px;
+            }
+            .filesstatus{
+                margin-right: 12px;
+            }
+            .ctrl{
+
+            }
+            a{
+                color: #363a43;
+                font-weight: bold;
+            }
+        }
+
+        .resultbox-wrap {
+            position: absolute;
+            top: 54px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-radius: 6px;
+            overflow-y: scroll;
+            border: 1px solid #bbcbd0;
+            
+        }
+
+        ul {
+            background-color: #fff;
+            padding: 10px 14px;
+            
+        }
 
         li {
-            margin-bottom:20px;
+            margin-bottom: 20px;
             padding: 6px 8px;
             border-radius: 5px;
             border: 1px solid #cfdbde;
             background-color: #f0f0f0;
             line-height: 50px;
-            &>div{
+
+            &:hover {
+                background-color: #ddd;
+            }
+
+            &>div {
                 display: inline-block;
-                &>div{
+
+                &>div {
                     display: inline-block;
                     vertical-align: middle;
                     overflow: hidden;
@@ -100,38 +156,43 @@ body {
             }
         }
 
-        .left{
+        .left {
             width: 36%;
-            .img-wrap{
+
+            .img-wrap {
                 width: 60px;
                 height: 60px;
                 margin-right: 20px;
                 position: relative;
                 overflow: hidden;
                 border-radius: 5px;
-                img{
+
+                img {
                     position: absolute;
                     left: 50%;
                     top: 50%;
-                    transform: translate(-50%,-50%);
+                    transform: translate(-50%, -50%);
                     display: block;
                     width: auto;
                     height: 100%;
                 }
             }
-            .filename{
+
+            .filename {
                 width: 120px;
                 margin-right: 20px;
             }
-            .uploadsize{
+
+            .uploadsize {
                 width: 80px;
             }
         }
 
-        .center{
+        .center {
             width: 30%;
             text-align: center;
-            .progress-wrap{
+
+            .progress-wrap {
                 width: 90%;
                 padding: 3px 4px;
                 background-color: #fff;
@@ -139,14 +200,16 @@ body {
                 border-radius: 36px;
                 position: relative;
             }
-            .progress-line{
+
+            .progress-line {
                 background-color: green;
                 height: 16px;
                 display: block;
                 border-radius: 36px;
                 width: 0%;
             }
-            .progress-error{
+
+            .progress-error {
                 color: red;
                 position: absolute;
                 left: 0;
@@ -157,15 +220,17 @@ body {
             }
         }
 
-        .right{
-            .outputsize{
+        .right {
+            .outputsize {
                 width: 80px;
                 margin-right: 6px;
             }
-            .ctrl{
+
+            .ctrl {
                 width: 136px;
                 margin-right: 20px;
-                a{
+
+                a {
                     color: #363a43;
                     display: inline;
                     font-weight: bold;
@@ -173,43 +238,6 @@ body {
                 }
             }
         }
-
-        // a {
-        //     display: block;
-        // }
-
-        // .left {
-        //     float: left;
-        //     width: 30%;
-        // }
-
-        // .center {
-        //     float: left;
-        //     width: 40%;
-        // }
-
-        // .right {
-        //     float: right;
-        //     width: 20%;
-        // }
-
-        // .filename {
-        //     width: 30%;
-        // }
-
-        // .uploadsize {
-        //     width: 80px;
-        // }
-
-        // .progress {
-        //     width: 220px;
-
-        //     .progress-status {}
-        // }
-
-        // .outputsize {
-        //     width: 80px;
-        // }
     }
 }
 
