@@ -1,3 +1,13 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: #dcebf1;
+    position: relative;
+}
+
 .container {
     margin: 0 auto;
     width: 1200px;
@@ -9,9 +19,13 @@
 }
 
 .main {
-    background-color: #dcebf1;
     padding: 20px 0;
-    
+    width: 1200px;
+    position: absolute;
+    left: 50%;
+    margin-left: -600px;
+    top: 45px;
+    bottom: 40px;
 
     .uploadbox {
         height: 166px;
@@ -19,7 +33,6 @@
         border: 1px dashed #616778;
         margin: 0 auto;
         border-radius: 12px;
-        cursor: pointer;
         position: relative;
     }
 
@@ -42,6 +55,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
 
+        p {
+            color: #666;
+            line-height: 24px;
+            text-align: center;
+        }
+
         p:first-child {
             font-size: 14px;
             font-weight: 800;
@@ -49,58 +68,148 @@
         }
     }
 
-    p {
-        color: #666;
-        line-height: 24px;
-        text-align: center;
-    }
+    .resultbox {
+        display: none;
+        position: absolute;
+        top: 220px;
+        bottom: 30px;
+        left: 50%;
+        width: 880px;
+        margin-left: -440px;
+        overflow-y: scroll;
+        background-color: #fff;
+        padding: 10px 14px;
+        border-radius: 5px;
 
-    .resultbox{
-        width: 800px;
-        margin: 20px auto 30px;
-        padding: 12px;
-        background: #fff;
-        height: 300px;
-        li{
-            margin: 4px 2px;
-            padding: 0 8px;
+        li {
+            margin-bottom:20px;
+            padding: 6px 8px;
+            border-radius: 5px;
             border: 1px solid #cfdbde;
             background-color: #f0f0f0;
-            line-height: 30px;
-            &>div>div{
-                float: left;
+            line-height: 50px;
+            &>div{
+                display: inline-block;
+                &>div{
+                    display: inline-block;
+                    vertical-align: middle;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
         }
-        a{
-            display: block;
-        }
-        .left{
-            float: left;
-            width: 30%;
-        }
-        .center{
-            float: left;
-            width: 40%;
-        }
-        .right{
-            float: right;
-            width: 20%;
-        }
-        .filename{
-            width: 30%;
-        }
-        .uploadsize{
-            width: 80px;
-        }
-        .progress{
-            width: 220px;
-            .progress-status{
 
+        .left{
+            width: 36%;
+            .img-wrap{
+                width: 60px;
+                height: 60px;
+                margin-right: 20px;
+                position: relative;
+                overflow: hidden;
+                border-radius: 5px;
+                img{
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%,-50%);
+                    display: block;
+                    width: auto;
+                    height: 100%;
+                }
+            }
+            .filename{
+                width: 120px;
+                margin-right: 20px;
+            }
+            .uploadsize{
+                width: 80px;
             }
         }
-        .outputsize{
-            width: 80px;
+
+        .center{
+            width: 30%;
+            text-align: center;
+            .progress-wrap{
+                width: 90%;
+                padding: 3px 4px;
+                background-color: #fff;
+                height: 16px;
+                border-radius: 36px;
+                position: relative;
+            }
+            .progress-line{
+                background-color: green;
+                height: 16px;
+                display: block;
+                border-radius: 36px;
+                width: 0%;
+            }
+            .progress-error{
+                color: red;
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                line-height: 22px;
+            }
         }
+
+        .right{
+            .outputsize{
+                width: 80px;
+                margin-right: 6px;
+            }
+            .ctrl{
+                width: 136px;
+                margin-right: 20px;
+                a{
+                    color: #363a43;
+                    display: inline;
+                    font-weight: bold;
+                    margin: 0 3px;
+                }
+            }
+        }
+
+        // a {
+        //     display: block;
+        // }
+
+        // .left {
+        //     float: left;
+        //     width: 30%;
+        // }
+
+        // .center {
+        //     float: left;
+        //     width: 40%;
+        // }
+
+        // .right {
+        //     float: right;
+        //     width: 20%;
+        // }
+
+        // .filename {
+        //     width: 30%;
+        // }
+
+        // .uploadsize {
+        //     width: 80px;
+        // }
+
+        // .progress {
+        //     width: 220px;
+
+        //     .progress-status {}
+        // }
+
+        // .outputsize {
+        //     width: 80px;
+        // }
     }
 }
 
