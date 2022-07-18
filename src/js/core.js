@@ -58,6 +58,12 @@ var dropzone = new Dropzone('div#dropzone', {
         this.on("addedfiles", function (file) {
             $('.resultbox').show();
         });
+        this.on("addedfile", function (file) {
+            //改写城kb为单位
+            for (let node of file.previewElement.querySelectorAll("[data-dz-size]")) {
+                node.innerHTML = byteToKB(file.size);
+            }
+        });
         //总上传进度
         this.on("totaluploadprogress", (totalUploadProgress, totalBytes, totalBytesSent) => {
             console.log("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent)
