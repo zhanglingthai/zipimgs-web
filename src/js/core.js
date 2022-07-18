@@ -38,7 +38,7 @@ var dropzone = new Dropzone('div#dropzone', {
         <div class="right" data-dz-complete>
             <div class="outputsize" data-dz-outputsize>0KB</div>
             <div class="ctrl">
-                <a href="" data-dz-compare alt="对比图片" target="_blank">对比图片</a>
+            <!-- <a href="" data-dz-compare alt="对比图片" target="_blank">对比图片</a> -->
                 <a href="" data-dz-outputurl alt="下载图片">下载图片</a>
             </div>
             <div class="proportion" data-dz-proportion>0%</div>
@@ -135,7 +135,7 @@ var dropzone = new Dropzone('div#dropzone', {
 });
 
 const byteToKB = (bytes) => {
-    return `${bytes / 1000} KB`;
+    return `${(bytes / 1000).toFixed(2)} KB`;
 }
 
 //压缩前后对比率
