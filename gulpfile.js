@@ -16,6 +16,8 @@ const sourcemaps = require("gulp-sourcemaps");
 const gulpRemoveHtml = require('gulp-remove-html');
 const removeEmptyLines = require('gulp-remove-empty-lines');
 const clean = require('gulp-clean');
+const {createProxyMiddleware} = require('http-proxy-middleware');
+
 
 const baseDir = path.resolve(__dirname, './src');
 const buildPath = path.resolve(__dirname, './dist');
@@ -114,11 +116,22 @@ function htmlTask(cb) {
         .on('end', cb);
 }
 
+
+var jsonPlaceholderProxy = createProxyMiddleware('/api', {
+    target: 'https://zipimgs.com/api',
+    changeOrigin: true,// for vhosted sites, changes host header to match to target's host
+    pathRewrite: {
+        '^/api': ''
+    },
+    logLevel: 'debug'
+})
+
 function serverTask(cb) {
 
     browserSync.init({
         server: {
-            baseDir: buildPath
+            baseDir: buildPath,
+            middleware:[jsonPlaceholderProxy]
         }
     });
     cb();

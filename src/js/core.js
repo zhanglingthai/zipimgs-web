@@ -1,8 +1,39 @@
 //dropzone
+const progressLine = $('#uploadtotal .progress-line');
+const progressPer = $('#uploadtotal .progress-per');
+const totalCtrlBtn = $('#uploadtotal .ctrl');
+const downAllBtn = $('#uploadtotal .downallbtn');
+const cleanAllBtn = $('#uploadtotal .cleanallbtn');
+let successImgs = [];//用来装所有成功压缩的图片，用户可以通过此数组来获取打包下载
+
+const resetAll = () => {
+    console.log('reset all');
+    successImgs = [];
+    $('.resultbox').hide();
+    progressPer.text(`0%`);
+    progressLine.width(`0%`);
+    totalCtrlBtn.css('display','none');
+
+    dropzone.removeAllFiles(true);
+}
+
+const downAll = () => {
+    console.log('down all');
+    console.log(successImgs);
+}
+
+const byteToKB = (bytes) => {
+    return `${(bytes / 1000).toFixed(2)} KB`;
+}
+
+//压缩前后对比率
+const getProportion = (uploadSize, outputSize) => {
+    return `-${100 - Math.floor((outputSize / uploadSize) * 100)} %`
+}
 
 Dropzone.autoDiscover = false;
 
-var dropzone = new Dropzone('div#dropzone', {
+const dropzone = new Dropzone('div#dropzone', {
     url: '/api/upload',
     method: "post",
     maxFiles: 50, // 用于限制此Dropzone将处理的最大文件数
@@ -52,13 +83,21 @@ var dropzone = new Dropzone('div#dropzone', {
     dictFileTooBig: "图片最大支持{{maxFilesize}}Mb，当前图片为{{filesize}}Mb ",
     dictResponseError: "上传失败：{{statusCode}}",
     init: function () { // dropzone初始化时调用您可以在此处添加事件侦听器
-        var myDropzone = this;
+        const that = this;
+        let uploadCout = 0;//本次总的上传个数
+
+        this.on("drop", function (e) {
+            resetAll();
+        });
 
         //每次操作触发一次
-        this.on("addedfiles", function (file) {
+        this.on("addedfiles", function (files) {
             $('.resultbox').show();
         });
         this.on("addedfile", function (file) {
+            uploadCout++;
+            // console.log("addedfile", file, uploadCout)
+
             //改写城kb为单位
             for (let node of file.previewElement.querySelectorAll("[data-dz-size]")) {
                 node.innerHTML = byteToKB(file.size);
@@ -66,7 +105,14 @@ var dropzone = new Dropzone('div#dropzone', {
         });
         //总上传进度
         this.on("totaluploadprogress", (totalUploadProgress, totalBytes, totalBytesSent) => {
-            console.log("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent)
+            // console.log("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent)
+
+            progressLine.width(`${totalUploadProgress}%`);
+            if (totalUploadProgress == 100) {
+                progressPer.text(`ZIPING IMGS...`);
+            } else {
+                progressPer.text(`${totalUploadProgress.toFixed(2)}%`);
+            }
         });
         //单个文件上传进度
         this.on("uploadprogress", (file, progress, bytesSent) => {
@@ -83,7 +129,7 @@ var dropzone = new Dropzone('div#dropzone', {
             }
         });
         this.on("success", (file, response, e) => {
-            console.log("success", file, response, e)
+            // console.log("success", file, response, e)
             if (file.previewElement) {
                 for (let node of file.previewElement.querySelectorAll("[data-dz-uploadprogress-per]")) {
                     node.textContent = `ZIP 成功`;
@@ -92,6 +138,10 @@ var dropzone = new Dropzone('div#dropzone', {
 
                 if (response.success) {
                     const img = response.data[0];
+                    successImgs.push({
+                        filename: img.filename,
+                        outputPath: img.outputPath
+                    });
                     for (let node of file.previewElement.querySelectorAll("[data-dz-outputsize]")) {
                         node.textContent = `${byteToKB(img.outputSize)}`;
                     }
@@ -116,7 +166,12 @@ var dropzone = new Dropzone('div#dropzone', {
         });
 
         this.on("complete", file => {
-            console.log('complete', file)
+            uploadCout--;
+            // console.log('complete', file, uploadCout)
+            if (uploadCout == 0) {
+                progressPer.text(`ZIP 完成`);
+                totalCtrlBtn.css("display", "inline-block");
+            }
             if (file.previewElement) {
                 for (let node of file.previewElement.querySelectorAll("[data-dz-complete]")) {
                     node.style.display = `inline-block`;
@@ -139,12 +194,3 @@ var dropzone = new Dropzone('div#dropzone', {
         })
     }
 });
-
-const byteToKB = (bytes) => {
-    return `${(bytes / 1000).toFixed(2)} KB`;
-}
-
-//压缩前后对比率
-const getProportion = (uploadSize, outputSize) => {
-    return `-${100 - Math.floor((outputSize / uploadSize) * 100)} %`
-}

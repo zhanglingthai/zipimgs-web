@@ -37,10 +37,12 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify-es": "^3.0.0",
     "imagemin-pngquant": "^9.0.2",
-    "sass": "^1.52.2"
+    "sass": "^1.52.2",
+    "http-proxy-middleware": "^2.0.6"
   },
   "bugs": {
     "url": "https://github.com/zhanglingthai/zipimgs-web/issues"
   },
-  "homepage": "https://github.com/zhanglingthai/zipimgs-web#readme"
+  "homepage": "https://github.com/zhanglingthai/zipimgs-web#readme",
+  "dependencies": {}
 }

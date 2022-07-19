@@ -19,24 +19,19 @@
         </div>
     </div>
     <div class="main">
-        <div class="uploadbox dropzone" id="dropzone">
-            <!-- <div class="icon"><img src="./imgs/upload-solid.svg"></div>
-                    <div class="prompt">
-                        <p>拖入 或 点选 JPG PNG GIF SVG 图片</p>
-                        <p>单次限制 32张 X 5MB</p>
-                    </div> -->
-        </div>
+        <div class="uploadbox dropzone" id="dropzone"></div>
         <div class="resultbox">
-            <!-- <div class="totalprogress">
-                <div class="filescount">总体进度：<span>20/30</span></div>
+            <div class="totalprogress" id="uploadtotal">
+                总体进度：
                 <div class="progress-wrap">
                     <span class="progress-line"></span>
+                    <span class="progress-per">0%...</span>
                 </div>
-                <div class="filesstatus">成功：<span>20</span>失败：<span>10</span></div>
                 <div class="ctrl">
-                    <a href="">下载全部</a>
+                    <a href="javascript:downAll()" class="downallbtn">打包下载</a>
+                    <a href="javascript:resetAll()" class="cleanallbtn">清空</a>
                 </div>
-            </div> -->
+            </div>
             <div class="resultbox-wrap">
                 <ul>
                 </ul>

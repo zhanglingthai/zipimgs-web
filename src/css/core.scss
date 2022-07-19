@@ -22,7 +22,8 @@ a {
 .header {
     line-height: 45px;
     background-color: #fff;
-    .logo{
+
+    .logo {
         padding: 0 10px;
     }
 }
@@ -99,21 +100,53 @@ a {
                 display: inline-block;
                 vertical-align: middle;
             }
-            .progress-wrap{
 
+            .progress-wrap {
+                width: 150px;
+                background-color: #ccc;
+                height: 16px;
+                border-radius: 36px;
+                position: relative;
+                margin-right: 20px;
+                overflow: hidden;
             }
-            .filescount{
+
+            .progress-line {
+                background-color: #92ed14;
+                height: 16px;
+                display: block;
+                border-radius: 36px;
+                width: 0%;
+            }
+
+            .progress-per {
+                text-align: center;
+                color: #40444f;
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                line-height: 16px;
+            }
+
+            .filescount {
                 margin-right: 12px;
             }
-            .filesstatus{
+
+            .uploudstatus {
                 margin-right: 12px;
             }
-            .ctrl{
 
+            .ctrl {
+                display: none;
             }
-            a{
+
+            a {
                 color: #363a43;
                 font-weight: bold;
+                display: inline;
+                margin: 0 10px;
             }
         }
 
@@ -124,16 +157,16 @@ a {
             left: 0;
             right: 0;
             border-radius: 6px;
-            
+
             overflow-y: auto;
             border: 1px solid #bbcbd0;
             background-color: #fff;
         }
 
         ul {
-            
+
             padding: 10px 14px;
-            
+
         }
 
         li {
@@ -214,7 +247,7 @@ a {
                 width: 0%;
             }
 
-            .progress-per{
+            .progress-per {
                 color: #40444f;
                 position: absolute;
                 left: 0;
@@ -237,6 +270,7 @@ a {
 
         .right {
             display: none;
+
             .outputsize {
                 width: 80px;
                 margin-right: 6px;
