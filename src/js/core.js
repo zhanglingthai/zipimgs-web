@@ -3,7 +3,7 @@
 Dropzone.autoDiscover = false;
 
 var dropzone = new Dropzone('div#dropzone', {
-    url: 'https://fundscat.com/api/upload',
+    url: '/api/upload',
     method: "post",
     maxFiles: 50, // 用于限制此Dropzone将处理的最大文件数
     parallelUploads: 8, // 前端同时发送upload 数
