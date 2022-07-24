@@ -19,6 +19,7 @@ const resetAll = () => {
 
 const downAll = () => {
     console.log('down all');
+    alert('comming soon');
     console.log(successImgs);
 }
 
