@@ -129,7 +129,9 @@ var jsonPlaceholderProxy = createProxyMiddleware('/api', {
 function serverTask(cb) {
 
     browserSync.init({
+        port:3001,
         server: {
+            
             baseDir: buildPath,
             middleware:[jsonPlaceholderProxy]
         }

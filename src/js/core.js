@@ -12,15 +12,21 @@ const resetAll = () => {
     $('.resultbox').hide();
     progressPer.text(`0%`);
     progressLine.width(`0%`);
-    totalCtrlBtn.css('display','none');
+    totalCtrlBtn.css('display', 'none');
 
     dropzone.removeAllFiles(true);
 }
 
 const downAll = () => {
-    console.log('down all');
-    alert('comming soon');
-    console.log(successImgs);
+    console.log(successImgs)
+    $.ajax({
+        type: "POST",
+        url: '/api/getzip',
+        data: {files:JSON.stringify(successImgs)},
+        success: function (data) {
+            console.log(data)
+        }
+    });
 }
 
 const byteToKB = (bytes) => {
