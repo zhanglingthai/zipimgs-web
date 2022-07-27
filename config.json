@@ -1,0 +1,10 @@
+{
+  "development": {
+    "apiUrl": "localhost:3000",
+    "env":"development"
+  },
+  "production": {
+    "apiUrl": "https://zipimgs.com/api/",
+    "env":"production"
+  }
+}

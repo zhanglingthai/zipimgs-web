@@ -16,19 +16,53 @@ const sourcemaps = require("gulp-sourcemaps");
 const gulpRemoveHtml = require('gulp-remove-html');
 const removeEmptyLines = require('gulp-remove-empty-lines');
 const clean = require('gulp-clean');
-const {createProxyMiddleware} = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const fileinclude = require('gulp-file-include');
+const minimist = require('minimist');
+const gutil = require('gulp-util');
 
 
 const baseDir = path.resolve(__dirname, './src');
 const buildPath = path.resolve(__dirname, './dist');
 
 //区分是否是serve模式
-let isServe = false;
+let isServe = process.env.NODE_ENV == "development";
 
-function setServeMode(cb) {
-    isServe = true;
-    cb();
+//默认development环境
+var knowOptions = {
+    string: 'env',
+    default: {
+        env: process.env.NODE_ENV || 'development'
+    }
+};
+
+var options = minimist(process.argv.slice(2), knowOptions);
+
+//生成filename文件，存入string内容
+function string_src(filename, string) {
+    var src = require('stream').Readable({ objectMode: true })
+    src._read = function() {
+        this.push(new gutil.File({ cwd: "", base: "", path: filename, contents: Buffer.from(string) }))
+        this.push(null)
+    }
+    return src
 }
+
+function constantsTask(cb) {
+    var myConfig = require('./config.json');
+    //取出对应的配置信息
+    var envConfig = myConfig[options.env];
+    console.log(myConfig)
+    console.log(options.env)
+    console.log(envConfig)
+    var conConfig = 'appconfig = ' + JSON.stringify(envConfig);
+    //生成config.js文件
+    return string_src("config.js", conConfig)
+        .pipe(dest('src/js/'))
+}
+
+
+
 
 function cleanTask(cb) {
     return src(buildPath, { read: false, allowEmpty: true })
@@ -102,6 +136,10 @@ function htmlTask(cb) {
     return src(baseDir + '/**/*.html')
         .pipe(gulpRemoveHtml()) //清除特定标签
         .pipe(removeEmptyLines({ removeComments: true })) //清除空白行
+        .pipe(fileinclude({
+            prefix: '@@', //引用符号
+            basepath: './src/include', //引用文件路径
+        }))
         .pipe(htmlmin({
             removeComments: true, //清除HTML注释
             collapseWhitespace: false, //压缩HTML
@@ -119,7 +157,7 @@ function htmlTask(cb) {
 
 var jsonPlaceholderProxy = createProxyMiddleware('/api', {
     target: 'https://zipimgs.com/api',
-    changeOrigin: true,// for vhosted sites, changes host header to match to target's host
+    changeOrigin: true, // for vhosted sites, changes host header to match to target's host
     pathRewrite: {
         '^/api': ''
     },
@@ -129,11 +167,11 @@ var jsonPlaceholderProxy = createProxyMiddleware('/api', {
 function serverTask(cb) {
 
     browserSync.init({
-        port:3001,
+        port: 3001,
         server: {
-            
+
             baseDir: buildPath,
-            middleware:[jsonPlaceholderProxy]
+            middleware: [jsonPlaceholderProxy]
         }
     });
     cb();
@@ -152,7 +190,7 @@ function watchTask(cb) {
 
 
 exports.serve = series(
-    setServeMode,
+    constantsTask,
     cleanTask,
     copyTask,
     parallel(
@@ -167,6 +205,7 @@ exports.serve = series(
 );
 
 exports.build = series(
+    constantsTask,
     cleanTask,
     copyTask,
     parallel(

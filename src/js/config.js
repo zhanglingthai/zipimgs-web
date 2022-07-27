@@ -1,0 +1,1 @@
+appconfig = {"apiUrl":"localhost:3000","env":"development"}
