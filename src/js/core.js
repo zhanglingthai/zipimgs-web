@@ -4,27 +4,33 @@ const progressPer = $('#uploadtotal .progress-per');
 const totalCtrlBtn = $('#uploadtotal .ctrl');
 const downAllBtn = $('#uploadtotal .downallbtn');
 const cleanAllBtn = $('#uploadtotal .cleanallbtn');
-let successImgs = [];//用来装所有成功压缩的图片，用户可以通过此数组来获取打包下载
+let successImgs = []; //用来装所有成功压缩的图片，用户可以通过此数组来获取打包下载
+const apiUrl = appconfig.apiUrl;
 
 const resetAll = () => {
-    console.log('reset all');
     successImgs = [];
     $('.resultbox').hide();
     progressPer.text(`0%`);
     progressLine.width(`0%`);
     totalCtrlBtn.css('display', 'none');
-
     dropzone.removeAllFiles(true);
 }
 
 const downAll = () => {
-    console.log(successImgs)
     $.ajax({
-        type: "POST",
+        type: 'POST',
+        dataType: 'json',
         url: '/api/getzip',
-        data: {files:JSON.stringify(successImgs)},
-        success: function (data) {
-            console.log(data)
+        data: { files: JSON.stringify(successImgs) },
+        success: function(resp) {
+            var filename = 'zipimgs.com.zip'
+            var eleLink = document.createElement('a');
+            eleLink.download = filename;
+            eleLink.style.display = 'none';
+            eleLink.href = resp.data
+            document.body.appendChild(eleLink);
+            eleLink.click()
+            document.body.removeChild(eleLink)
         }
     });
 }
@@ -41,7 +47,7 @@ const getProportion = (uploadSize, outputSize) => {
 Dropzone.autoDiscover = false;
 
 const dropzone = new Dropzone('div#dropzone', {
-    url: '/api/upload',
+    url: `/api/upload`,
     method: "post",
     maxFiles: 50, // 用于限制此Dropzone将处理的最大文件数
     parallelUploads: 8, // 前端同时发送upload 数
@@ -50,14 +56,14 @@ const dropzone = new Dropzone('div#dropzone', {
     paramName: "file", //参数名
     filesizeBase: 1000,
     uploadMultiple: false, // 是否在一个请求中发送多个文件。
-    addRemoveLinks: false,//每个预览添加删除按钮
+    addRemoveLinks: false, //每个预览添加删除按钮
     dictDefaultMessage: `
     <div class="icon"><img src="./imgs/upload-solid.svg"></div>
     <div class="prompt">
         <p>拖入 或 点选 JPG PNG GIF SVG 图片</p>
         <p>单次限制 50张 X 5MB</p>
     </div>
-    `,//上传区域dom
+    `, //上传区域dom
     previewsContainer: document.querySelector('.resultbox ul'),
     previewTemplate: `
     <li>
@@ -83,25 +89,25 @@ const dropzone = new Dropzone('div#dropzone', {
         </div>
     </li>
     `,
-    autoProcessQueue: true,// 如果为false，文件将被添加到队列中，但不会自动处理队列。
+    autoProcessQueue: true, // 如果为false，文件将被添加到队列中，但不会自动处理队列。
     dictFallbackMessage: "你的浏览器不支持拖拉文件来上传",
     dictInvalidFileType: "图片仅支持jpg,gif,png,svg",
     dictMaxFilesExceeded: "图片数量超出{{maxFiles}}",
     dictFileTooBig: "图片最大支持{{maxFilesize}}Mb，当前图片为{{filesize}}Mb ",
     dictResponseError: "上传失败：{{statusCode}}",
-    init: function () { // dropzone初始化时调用您可以在此处添加事件侦听器
+    init: function() { // dropzone初始化时调用您可以在此处添加事件侦听器
         const that = this;
-        let uploadCout = 0;//本次总的上传个数
+        let uploadCout = 0; //本次总的上传个数
 
-        this.on("drop", function (e) {
-            resetAll();
-        });
+        // this.on("drop", function (e) {
+        //     resetAll();
+        // });
 
         //每次操作触发一次
-        this.on("addedfiles", function (files) {
+        this.on("addedfiles", function(files) {
             $('.resultbox').show();
         });
-        this.on("addedfile", function (file) {
+        this.on("addedfile", function(file) {
             uploadCout++;
             // console.log("addedfile", file, uploadCout)
 
@@ -147,7 +153,7 @@ const dropzone = new Dropzone('div#dropzone', {
                     const img = response.data[0];
                     successImgs.push({
                         filename: img.filename,
-                        outputPath: img.outputPath
+                        outputPath: img.outputPath,
                     });
                     for (let node of file.previewElement.querySelectorAll("[data-dz-outputsize]")) {
                         node.textContent = `${byteToKB(img.outputSize)}`;

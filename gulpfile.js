@@ -10,7 +10,7 @@ const pngquant = require('imagemin-pngquant');
 const cssmin = require('gulp-clean-css');
 const cache = require('gulp-cache');
 const babel = require('gulp-babel');
-const uglify = require('gulp-uglify-es').default;
+const uglify = require('gulp-uglify');
 const htmlmin = require('gulp-htmlmin');
 const sourcemaps = require("gulp-sourcemaps");
 const gulpRemoveHtml = require('gulp-remove-html');
@@ -20,7 +20,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const fileinclude = require('gulp-file-include');
 const minimist = require('minimist');
 const gutil = require('gulp-util');
-
+const myConfig = require('./config.json');
 
 const baseDir = path.resolve(__dirname, './src');
 const buildPath = path.resolve(__dirname, './dist');
@@ -49,20 +49,13 @@ function string_src(filename, string) {
 }
 
 function constantsTask(cb) {
-    var myConfig = require('./config.json');
     //取出对应的配置信息
     var envConfig = myConfig[options.env];
-    console.log(myConfig)
-    console.log(options.env)
-    console.log(envConfig)
-    var conConfig = 'appconfig = ' + JSON.stringify(envConfig);
+    var conConfig = 'const appconfig = ' + JSON.stringify(envConfig);
     //生成config.js文件
     return string_src("config.js", conConfig)
         .pipe(dest('src/js/'))
 }
-
-
-
 
 function cleanTask(cb) {
     return src(buildPath, { read: false, allowEmpty: true })
@@ -127,7 +120,7 @@ function jsTask(cb) {
             compress: true //类型：Boolean 默认：true 是否完全压缩
             //preserveComments: 'all' //保留所有注释
         }))
-        .pipe(gulpif(isServe, sourcemaps.write(".")))
+        .pipe(gulpif(isServe, sourcemaps.write()))
         .pipe(dest(buildPath))
         .on('end', cb);
 }
@@ -154,9 +147,8 @@ function htmlTask(cb) {
         .on('end', cb);
 }
 
-
 var jsonPlaceholderProxy = createProxyMiddleware('/api', {
-    target: 'https://zipimgs.com/api',
+    target: myConfig.development.apiUrl,
     changeOrigin: true, // for vhosted sites, changes host header to match to target's host
     pathRewrite: {
         '^/api': ''
@@ -164,14 +156,21 @@ var jsonPlaceholderProxy = createProxyMiddleware('/api', {
     logLevel: 'debug'
 })
 
-function serverTask(cb) {
+var outputPlaceholderProxy = createProxyMiddleware(['/uploads', '/outputs', '/zipfiles'], {
+    target: myConfig.development.apiUrl,
+    changeOrigin: true, // for vhosted sites, changes host header to match to target's host
+    pathRewrite: {
+        '^/': ''
+    },
+    logLevel: 'debug'
+})
 
+function serverTask(cb) {
     browserSync.init({
         port: 3001,
         server: {
-
             baseDir: buildPath,
-            middleware: [jsonPlaceholderProxy]
+            middleware: [jsonPlaceholderProxy, outputPlaceholderProxy]
         }
     });
     cb();

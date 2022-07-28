@@ -1,1 +1,1 @@
-appconfig = {"apiUrl":"localhost:3000","env":"development"}
+const appconfig = {"apiUrl":"http://localhost:3000","env":"development"}
