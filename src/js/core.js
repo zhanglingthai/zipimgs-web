@@ -14,6 +14,7 @@ const resetAll = () => {
     progressLine.width(`0%`);
     totalCtrlBtn.css('display', 'none');
     dropzone.removeAllFiles(true);
+    $('.hintbox').show();
 }
 
 const downAll = () => {
@@ -105,6 +106,7 @@ const dropzone = new Dropzone('div#dropzone', {
 
         //每次操作触发一次
         this.on("addedfiles", function(files) {
+            $('.hintbox').hide();
             $('.resultbox').show();
         });
         this.on("addedfile", function(file) {

@@ -1,1 +1,1 @@
-const appconfig = {"apiUrl":"http://localhost:3000","env":"development"}
+const appconfig = {"apiUrl":"https://zipimgs.com/api/","env":"production"}

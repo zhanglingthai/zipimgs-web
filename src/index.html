@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="无损压缩图片">
-    <meta name="keywords" content="图像，压缩,jpg,png,gif,svg">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="免费在线压缩图片">
+    <meta name="keywords" content="免费压缩,图像处理,压缩图片,在线压缩">
     <link rel="stylesheet" href="./libs/dropzone/dropzone.min.css" type="text/css" />
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/core.css">
@@ -20,6 +20,17 @@
     </div>
     <div class="main">
         <div class="uploadbox dropzone" id="dropzone"></div>
+        <div class="hintbox">
+            <ul>
+                <li>ZIPIMGS做了什么？</li>
+                <li>ZIPIMGS使用智能有损压缩技术将您的JPG, PNG ,GIF ,SVG图片的文件大小降低。 通过选择性的减少图片中的颜色，只需要很少的字节数就能保存数据。 对视觉的影响几乎不可见，但是在文件大小上有非常大的差别。</li>
+                <li>什么人要使用ZIPIMGS？</li>
+                <li>WEB开发者,需要使用图片编辑的非专业性人员</li>
+                <li>ZIPIMGS对用户的隐私保护？</li>
+                <li>ZIPIMGS在12小时后自动删除用户已上传数据，并已开源项目</li>
+
+            </ul>
+        </div>
         <div class="resultbox">
             <div class="totalprogress" id="uploadtotal">
                 总体进度：
@@ -37,6 +48,7 @@
                 </ul>
             </div>
         </div>
+        
     </div>
     <div class="footer">
         <div class="container">
@@ -50,13 +62,13 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NQ6LL4EK0L"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
 
-      gtag('config', 'G-NQ6LL4EK0L');
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-NQ6LL4EK0L');
     </script>
-
 </body>
 
 </html>

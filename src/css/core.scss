@@ -79,6 +79,30 @@ a {
         }
     }
 
+    .hintbox{
+        position: absolute;
+        top: 220px;
+        bottom: 30px;
+        left: 50%;
+        width: 914px;
+        margin-left: -440px;
+        background-color:white;
+        color:#40444f;
+        line-height:30px;
+        border-radius: 6px;
+        overflow-y: auto;
+        border: 1px solid #bbcbd0;
+        ul{
+            padding:50px;
+        }
+        li:nth-child(odd){
+            font-size:1.2em;
+            font-weight:bold;
+            margin-top:20px
+        }
+
+    }
+
     .resultbox {
         display: none;
         position: absolute;
@@ -157,7 +181,6 @@ a {
             left: 0;
             right: 0;
             border-radius: 6px;
-
             overflow-y: auto;
             border: 1px solid #bbcbd0;
             background-color: #fff;
